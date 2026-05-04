@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<h2>Danh sách Phương tiện Vận Tải</h2>
+<a href="/add">Thêm mới phương tiện</a>
+
+<table class="table table-bordered table-striped">
+  <thead class="table-dark">
+  <tr>
+    <th>ID</th>
+    <th>Biển số xe</th>
+    <th>Tài xế</th>
+    <th>Năm SX</th>
+    <th>Ngày ĐK</th>
+    <th>Loại dịch vụ</th>
+    <th>Trạng thái</th>
+    <th>Hành động</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="v : ${listVehicle}">
+    <td th:text="${v.id}"></td>
+    <td th:text="${v.licensePlate}"></td>
+    <td th:text="${v.driverName}"></td>
+    <td th:text="${v.manufactureYear}"></td>
+    <td th:text="${v.joinDate}"></td>
+    <td th:text="${v.category != null ? v.category.name : 'N/A'}"></td>
+    <td>
+      <span th:text="${v.isActive ? 'Đang nhận cuốc' : 'Trống'}"
+            th:class="${v.isActive ? 'badge bg-success' : 'badge bg-secondary'}"></span>
+    </td>
+    <td>
+      <a th:href="@{'/edit/' + ${v.id}}" class="btn btn-primary btn-sm">Sửa</a>
+      <a th:href="@{'/delete/' + ${v.id}}" class="btn btn-danger btn-sm" onclick="return confirm('Bạn có muốn xóa?')">Xóa</a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<nav aria-label="Page navigation" th:if="${totalPages > 1}">
+  <ul class="pagination">
+    <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+      <a class="page-link" th:href="@{'/?page=' + ${currentPage - 1}}">Trang trước</a>
+    </li>
+    <li class="page-item" th:each="i : ${#numbers.sequence(1, totalPages)}" th:classappend="${currentPage == i} ? 'active'">
+      <a class="page-link" th:href="@{'/?page=' + ${i}}" th:text="${i}"></a>
+    </li>
+    <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+      <a class="page-link" th:href="@{'/?page=' + ${currentPage + 1}}">Trang sau</a>
+    </li>
+  </ul>
+</nav>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body >
+
+<h2>Thêm mới phương tiện</h2>
+<form th:action="@{/add}" th:object="${vehicle}" method="POST" class="w-50">
+
+    <div >
+        <label >Biển số xe</label>
+        <input type="text"  th:field="*{licensePlate}" />
+        <div class="text-danger" th:if="${#fields.hasErrors('licensePlate')}" th:errors="*{licensePlate}"></div>
+    </div>
+
+    <div >
+        <label >Tên tài xế</label>
+        <input type="text" th:field="*{driverName}" />
+        <div class="text-danger" th:if="${#fields.hasErrors('driverName')}" th:errors="*{driverName}"></div>
+    </div>
+
+    <div >
+        <label >Năm sản xuất</label>
+        <input type="number"  th:field="*{manufactureYear}" />
+        <div class="text-danger" th:if="${#fields.hasErrors('manufactureYear')}" th:errors="*{manufactureYear}"></div>
+    </div>
+
+    <div >
+        <label >Ngày đăng ký</label>
+        <input type="date"th:field="*{joinDate}" />
+        <div class="text-danger" th:if="${#fields.hasErrors('joinDate')}" th:errors="*{joinDate}"></div>
+    </div>
+
+    <div>
+        <label >Loại dịch vụ</label>
+        <select  th:field="*{category.id}">
+            <option value="">Chọn dịch vụ</option>
+            <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
+        </select>
+        <div class="text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+    </div>
+
+    <div>
+        <label >Trạng thái nhận cuốc</label>
+        <select  th:field="*{isActive}">
+            <option value="true">Đang nhận cuốc</option>
+            <option value="false">Trống</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-success">Lưu</button>
+    <a href="/" class="btn btn-secondary">Hủy</a>
+</form>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+</html>
