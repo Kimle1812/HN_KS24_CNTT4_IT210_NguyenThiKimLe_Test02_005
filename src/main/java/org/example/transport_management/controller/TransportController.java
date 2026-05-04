@@ -2,6 +2,7 @@ package org.example.transport_management.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.example.transport_management.model.ServiceCategory;
 import org.example.transport_management.model.Vehicle;
 import org.example.transport_management.service.ITransportService;
 import org.springframework.data.domain.Page;
@@ -36,11 +37,27 @@ public class TransportController {
     @PostMapping("/add")
     public String addVehicle(@Valid @ModelAttribute("vehicle") Vehicle vehicle,
                              BindingResult result,
+                             @RequestParam(value = "category.id", required = false) Long categoryId1,
+                             @RequestParam(value = "category", required = false) Long categoryId2,
                              Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categories", transportService.findAllCategories());
             return "add";
         }
+
+        Long categoryId = categoryId1 != null ? categoryId1 : (categoryId2 != null ? categoryId2 : null);
+
+        if (categoryId == null && vehicle.getCategory() != null) {
+            categoryId = vehicle.getCategory().getId();
+        }
+
+        if (categoryId != null) {
+            ServiceCategory category = transportService.findCategoryById(categoryId);
+            vehicle.setCategory(category);
+        } else {
+            vehicle.setCategory(null);
+        }
+
         transportService.save(vehicle);
         return "redirect:/";
     }
@@ -59,11 +76,28 @@ public class TransportController {
     @PostMapping("/edit")
     public String updateVehicle(@Valid @ModelAttribute("vehicle") Vehicle vehicle,
                                 BindingResult result,
+                                @RequestParam(value = "category.id", required = false) Long categoryId1,
+                                @RequestParam(value = "category", required = false) Long categoryId2,
                                 Model model) {
         if (result.hasErrors()) {
             model.addAttribute("categories", transportService.findAllCategories());
             return "edit";
         }
+
+        Long categoryId = categoryId1 != null ? categoryId1 : (categoryId2 != null ? categoryId2 : null);
+
+        if (categoryId == null && vehicle.getCategory() != null) {
+            categoryId = vehicle.getCategory().getId();
+        }
+
+        if (categoryId != null) {
+            ServiceCategory category = transportService.findCategoryById(categoryId);
+            vehicle.setCategory(category);
+        } else {
+            // Cho phép không chọn (trường hợp không chọn thì category = null)
+            vehicle.setCategory(null);
+        }
+
         transportService.save(vehicle);
         return "redirect:/";
     }

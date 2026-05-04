@@ -42,7 +42,6 @@ public class Vehicle {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
-    @NotNull(message = "Vui lòng chọn loại dịch vụ")
     private ServiceCategory category;
 
     private Boolean isActive;
